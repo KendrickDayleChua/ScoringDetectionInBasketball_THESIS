@@ -1,0 +1,36 @@
+Pseudocode for Object Detection Scoring Logic:
+
+Filter detected rings from boxes:
+    Extract the boxes where class == 2 (representing rings).
+    Store the ring boxes in the 'rings' variable.
+
+Check if any rings are detected:
+    If the number of detected rings is not zero:
+        Retrieve the position of the first detected ring and store it in 'ring_position'.
+
+Filter detected balls from boxes:
+    Extract the boxes where class == 0 (representing balls).
+    Store the ball boxes in the 'balls' variable.
+
+Draw bounding boxes for detected balls:
+    Call draw_boxes() function to draw boxes around the 'balls' on the frame using red color (RGB: (0, 0, 255)).
+
+Check if a ring is detected:
+    If 'ring_position' is not None:
+        Draw a bounding box around the detected ring using the color blue (RGB: (255, 0, 0)).
+
+Iterate through each detected ball:
+    For each 'ball' in the 'balls' list:
+        Calculate the center of the ball using get_center().
+        Calculate the center of the ring using get_center().
+        Get the bottom y-coordinate of the ring and store it in 'ring_bottom'.
+        
+        Check if the ball is below the ring:
+            Compare the y-coordinate of 'ball_center' with 'ring_bottom'.
+
+        Calculate the distance between 'ball_center' and 'ring_center' using torch.norm().
+
+        Check if the ball is close to the ring and below it:
+            If the distance is less than 51 pixels and the ball is below the ring:
+                Set 'score_display_counter' to 'score_display_duration'.
+                Print a message indicating scoring was detected at the current frame.
